@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>El pollo loco</title>
+    <link rel="stylesheet" href="./style/style.css" />
+    <link
+      rel="icon"
+      type="image/gif"
+      href="./img/ElPoloLoco/3_enemies_chicken/chicken_normal/Gallina muestra gif.gif"
+    />
+
+    <script src="./javascript/classes/drawableObject.class.js"></script>
+    <script src="./javascript/classes/movable-object.class.js"></script>
+    <script src="./javascript/classes/chicken.class.js"></script>
+    <script src="./javascript/classes/smallchicken.class.js"></script>
+    <script src="./javascript/classes/character.class.js"></script>
+    <script src="./javascript/classes/cloud.class.js"></script>
+    <script src="./javascript/classes/coins.class.js"></script>
+    <script src="./javascript/classes/cactus.class.js"></script>
+    <script src="./javascript/classes/salsaBottles.class.js"></script>
+    <script src="./javascript/classes/statusbar.class.js"></script>
+    <script src="./javascript/classes/statusbarCoins.class.js"></script>
+    <script src="./javascript/classes/statusbarSalsaBottles.class.js"></script>
+    <script src="./javascript/classes/statusbarEndboss.class.js"></script>
+    <script src="./javascript/classes/world.class.js"></script>
+    <script src="./javascript/classes/background-object.class.js"></script>
+    <script src="./javascript/classes/keyboard.class.js"></script>
+    <script src="./javascript/classes/level.class.js"></script>
+    <script src="./javascript/classes/throwableObject.class.js"></script>
+    <script src="./javascript/classes/endboss.class.js"></script>
+    <script src="./levels/level1.js"></script>
+    <script src="./javascript/game.js" defer></script>
+  </head>
+  <body>
+    <div class="overlayBoxForMobile">
+      <h1 class="zabars">El pollo loco</h1>
+
+      <div id="startScreenContainer" class="startScreenContainer">
+        <button id="startGameButton" class="startGameButton" onclick="init()">
+          Start Game
+        </button>
+        <div class="rightTopButtonBox">
+          <button class="musicOnButton" onclick="muteSound()">
+            <img
+              id="musicButtonIcon"
+              class="musicOnIcon"
+              src="./img/ElPoloLoco/icons/musicOnButton.png"
+              alt="music On Button"
+            />
+          </button>
+          <button class="manualButton" onclick="openManual()">
+            <img
+              class="manualIcon"
+              src="./img/ElPoloLoco/icons/openBookIcon.png"
+              alt=""
+            />
+          </button>
+          <button class="storyBookButton" onclick="openStoryBook()">
+            <img
+              class="manualIcon"
+              src="./img/ElPoloLoco/icons/whyIcon.png"
+              alt=""
+            />
+          </button>
+        </div>
+        <button class="infoButton">
+          <a href="./impressum.html" target="_blank"
+            ><img class="infoIcon" src="./img/ElPoloLoco/icons/infoIcon.png"
+          /></a>
+        </button>
+        <img
+          class="startScreenContainerImage"
+          src="./img/ElPoloLoco/9_intro_outro_screens/start/startscreen_1.png"
+          alt="start screen"
+        />
+      </div>
+      <div
+        id="endScreenContainer"
+        class="endScreenContainer"
+        style="display: none"
+      >
+        <button
+          id="restartGameButton"
+          class="startGameButton"
+          onclick="restartGame()"
+        >
+          restart Game
+        </button>
+        <button
+          id="startScreenButton"
+          class="startScreenButton"
+          onclick="startScreen()"
+        >
+          <img
+            class="homeButtonImg"
+            src="./img/ElPoloLoco/icons/homeIcon.png"
+            alt="house"
+          />
+        </button>
+        <img
+          class="startScreenContainerImage"
+          src="./img/ElPoloLoco/9_intro_outro_screens/game_over/game over.png"
+          alt="end screen"
+        />
+      </div>
+      <canvas
+        width="720px"
+        height="480px"
+        id="canvas"
+        style="display: none"
+      ></canvas>
+      <div class="loadingScreen" id="loadingScreen"></div>
+      <div id="manualBox" class="manualBox" style="display: none">
+        <img
+          class="closeButton"
+          src="./img/ElPoloLoco/icons/closeRoundIcon.png"
+          alt=""
+          onclick="closeManual()"
+        />
+        <span class="manualBoxText"
+          ><img
+            src="./img/ElPoloLoco/icons/leftArrowButtonIcon.png"
+            alt=""
+            class="manualBoxIcon"
+          />Pfeiltaste Links = Nach Links laufen</span
+        >
+        <span class="manualBoxText"
+          ><img
+            src="./img/ElPoloLoco/icons/rightArrowButtonIcon.png"
+            alt=""
+            class="manualBoxIcon"
+          />
+          Pfeiltaste Rechts = Nach Rechts laufen</span
+        >
+        <span class="manualBoxText"
+          ><img
+            src="./img/ElPoloLoco/icons/spaceButtonIcon.png"
+            alt=""
+            class="manualBoxIconSpacebar"
+          />
+          Leertaste = Springen</span
+        >
+        <span class="manualBoxText"
+          ><img
+            src="./img/ElPoloLoco/icons/dButtonIcon.png"
+            alt=""
+            class="manualBoxIcon"
+          />
+          Taste "D" = Flasche werfen</span
+        >
+      </div>
+      <div id="storyBookBox" class="storyBookBox" style="display: none">
+        <img
+          class="closeButton"
+          src="./img/ElPoloLoco/icons/closeRoundIcon.png"
+          alt=""
+          onclick="closeStoryBook()"
+        />
+        <span class="manualBoxText"
+          >Willkommen zu "Pepe's Hühnerjagd"! In diesem actiongeladenen Spiel
+          schlüpfst du in die Rolle von Pepe, einem mutigen Helden mit einem
+          wichtigen Ziel: die Welt vor dem großen, bösen Hühnchen zu retten.
+        </span>
+      </div>
+      <div class="turnScreenBox" id="turnScreen">
+        <img
+          class="turnScreenIcon"
+          src="./img/ElPoloLoco/icons/mobileLandscapeModeIcon.png"
+          alt=""
+        />
+        <p>Turn Device</p>
+      </div>
+      <div class="mobileGameButtonBox">
+        <div class="gameButtonSideBox">
+          <img
+            class="imgGameButton"
+            id="leftArrowButton"
+            src="./img/ElPoloLoco/icons/previousIcon.png"
+            alt=""
+          />
+          <img
+            class="imgGameButton"
+            id="rightArrowButton"
+            src="./img/ElPoloLoco/icons/nextIcon.png"
+            alt=""
+          />
+        </div>
+        <div class="gameButtonSideBox">
+          <img
+            class="imgGameButton rotateButton90"
+            id="jumpButton"
+            src="./img/ElPoloLoco/icons/nextIcon.png"
+            alt=""
+          />
+          <img class="imgGameButton rotateButton45" id="throwButton"
+          src="./img/ElPoloLoco/icons/nextIcon.png" alt=""">
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
